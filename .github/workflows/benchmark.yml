@@ -1,0 +1,36 @@
+name: Retrieval benchmark
+
+# Runs the SciFact benchmark with pretrained models from Hugging Face.
+# Start it by hand from the Actions tab. Results appear in the job summary
+# and as a downloadable artifact.
+on:
+  workflow_dispatch:
+    inputs:
+      embedder:
+        description: "lsa, bge-small, or any sentence-transformers id"
+        default: bge-small
+      reranker:
+        description: "none, minilm, or any cross-encoder id"
+        default: minilm
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Install (CPU-only torch keeps the install small)
+        run: |
+          uv pip install torch --index-url https://download.pytorch.org/whl/cpu
+          uv pip install -e ".[models]"
+      - name: Run benchmark
+        run: |
+          python benchmarks/bench_retrieval.py \
+            --embedder "${{ inputs.embedder }}" --reranker "${{ inputs.reranker }}" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: retrieval-benchmark
+          path: benchmarks/results/*.json
