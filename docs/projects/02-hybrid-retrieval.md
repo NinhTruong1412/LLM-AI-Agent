@@ -76,8 +76,11 @@ from hybrid_retrieval import Document, HybridRetriever, LSAEmbedder, RetrievalCo
 
 docs = [Document("1", "Aspirin lowers heart attack risk", {"year": 2021}), ...]
 r = HybridRetriever(docs, embedder=LSAEmbedder())
-res = r.search("does aspirin help the heart?", filter={"year": {"$gte": 2020}},
-               config=RetrievalConfig(fusion="convex", alpha=0.3, top_k=5))
+res = r.search(
+    "does aspirin help the heart?",
+    filter={"year": {"$gte": 2020}},
+    config=RetrievalConfig(fusion="convex", alpha=0.3, top_k=5),
+)
 res.doc_ids, res.timings_ms
 ```
 

@@ -14,7 +14,7 @@ dependencies = [
 llm = ["anthropic>=2.10"]
 # Pretrained dense embedders and cross-encoder rerankers (downloads from Hugging Face).
 models = ["sentence-transformers>=3.0"]
-dev = ["pytest>=8", "ruff>=0.6"]
+dev = ["pytest>=8", "ruff==0.17.5"]
 
 [build-system]
 requires = ["hatchling"]
