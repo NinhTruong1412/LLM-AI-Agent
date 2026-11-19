@@ -23,8 +23,8 @@ jobs:
           python-version: "3.12"
       - name: Install (CPU-only torch keeps the install small)
         run: |
-          uv pip install --system torch --index-url https://download.pytorch.org/whl/cpu
-          uv pip install --system -e ".[models]"
+          uv pip install torch --index-url https://download.pytorch.org/whl/cpu
+          uv pip install -e ".[models]"
       - name: Run benchmark
         run: |
           python benchmarks/bench_retrieval.py \
